@@ -821,7 +821,7 @@ mask_fit(s_vert,s_hor) = 1;
 %% LLR settings
 addpath(genpath('/home/ayde/University of Michigan Dropbox/Reina Ayde/MatlabProjects/CardiacMRF_2D/Reconstruction Code/Gridding'));
 addpath(genpath('/home/ayde/University of Michigan Dropbox/Reina Ayde/MatlabProjects/CardiacMRF_2D/Reconstruction Code/Dictionary/LowRankRecon'));
-addpath(genpath('/home/ayde/University of Michigan Dropbox/Reina Ayde/MatlabProjects/CardiacMRF_2D/CardiacMRF_2D/Reconstruction Code/Miscellaneous'));
+addpath(genpath('/home/ayde/University of Michigan Dropbox/Reina Ayde/MatlabProjects/CardiacMRF_2D/Reconstruction Code/Miscellaneous'));
 raw_orig_Z = flip(transformKspaceToImage(raw_orig,3),3);
 readOSFactor=1;
 numSpiralArms=nproj;
@@ -1092,17 +1092,14 @@ climst2 = [0, 300];  %2000/250
 idx1 = s_vert;
 idx2 = s_hor;
 figure, 
-%ax1 = subplot(311); imagesc(rot90(cat(1,t1map(idx1,idx2),t1mapLLR(idx1,idx2),t1map(idx1,idx2)-t1mapLLR(idx1,idx2))), climst1), colormap(ax1, T1colormap), colorbar
-%ax2 = subplot(312); imagesc(rot90(cat(1,t2map(idx1,idx2),t2mapLLR(idx1,idx2),t2map(idx1,idx2)-t2mapLLR(idx1,idx2))), climst2), colormap(ax2, T2colormap), colorbar
-
-ax1 = subplot(211); imagesc(rot90(cat(1,t1map(idx1,idx2))), climst1), colormap(ax1, T1colormap), colorbar
-ax2 = subplot(212); imagesc(rot90(cat(1,t2map(idx1,idx2))), climst2), colormap(ax2, T2colormap), colorbar
+ax1 = subplot(311); imagesc(rot90(cat(1,t1map(idx1,idx2),t1mapLLR(idx1,idx2),t1map(idx1,idx2)-t1mapLLR(idx1,idx2))), climst1), colormap(ax1, T1colormap), colorbar
+ax2 = subplot(312); imagesc(rot90(cat(1,t2map(idx1,idx2),t2mapLLR(idx1,idx2),t2map(idx1,idx2)-t2mapLLR(idx1,idx2))), climst2), colormap(ax2, T2colormap), colorbar
 
 m00 = abs(m0map)/max(abs(m0map(:)));
 m00LR = abs(m0mapLLR)/max(abs(m0mapLLR(:)));
 ax3 = subplot(313); imagesc(rot90(cat(1,m00(idx1,idx2),m00LR(idx1,idx2),m00(idx1,idx2)-m00LR(idx1,idx2))),[0 0.6]), colormap(ax3, gray), colorbar
 
-figure, imagesc(rot90(cat(1,b0map(idx1,idx2),b0mapLLR(idx1,idx2),b0map(idx1,idx2)-b0mapLLR(idx1,idx2))), [-100 100]), colormap(gray), colorbar
+%figure, imagesc(rot90(cat(1,b0map(idx1,idx2),b0mapLLR(idx1,idx2),b0map(idx1,idx2)-b0mapLLR(idx1,idx2))), [-100 100]), colormap(gray), colorbar
 
 %% single slice saving
 image_combined = single(image_combined);
