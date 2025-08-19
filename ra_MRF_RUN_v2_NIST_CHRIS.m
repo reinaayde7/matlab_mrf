@@ -40,7 +40,7 @@ GRAPPAz                 = 0;
 CalculateDict           = 1;    % if 0 => loads a pregen dictionary
 doFit                   = 1;    % do not run pm fit
         singleSliceFit  = 1;
-        sliceToFit      = 5;
+        sliceToFit      = 35;
 
 doSave                  = 1;
     tempfilename = ['recon_' date '_FISP'];
@@ -62,7 +62,7 @@ nproj = 48;
 %[activepath,name,ext] = fileparts(activefilename);
 %cd(activepath);
 %cd('../MRF_recon_examples/');
-addpath('./rr_dictionary/DictSimulation_NoSP/');
+addpath('./dictionary/DictSimulation_NoSP/');
 % addpath('./dictionary/DictSimulation_SP');
 % addpath('./data');
 addpath('./dependence');
@@ -342,11 +342,11 @@ if CalculateDict
     else
         tic
         % This function takes txt file for recon (Rudy's code)
-        [dict,r] = Calculate_MRF_FISP_DictwithDelays(RawDataFileName,log.rawinfo,log.t1series,log.t2series,0,...%[0.6:0.1:1.4] for B1
-        tetxtfile,trtxtfile,fatxtfile,phtxtfile,1,log.delay,2);
+        % [dict,r] = Calculate_MRF_FISP_DictwithDelays(RawDataFileName,log.rawinfo,log.t1series,log.t2series,0,...%[0.6:0.1:1.4] for B1
+        % tetxtfile,trtxtfile,fatxtfile,phtxtfile,1,log.delay,2);
         % It's a similar function that takes directly the data and does not
         % load them from a txt file
-        % [dict,r] = Calculate_MRF_FISP_DictwithDelays_(RawDataFileName,log.rawinfo,log.t1series,log.t2series,0, log.TE, log.TR, log.FA,PH,1,log.delay,2);
+        [dict,r] = Calculate_MRF_FISP_DictwithDelays_(RawDataFileName,log.rawinfo,log.t1series,log.t2series,0, log.TE, log.TR, log.FA,PH,1,log.delay,2);
 
         log.timeGen = toc;
         fprintf('Saving FISP dictionary \n')
@@ -412,9 +412,9 @@ fprintf('Step 2: Prepare NUFFT \n');
 %load('./data/Spiral_Traj.mat','kxall','kyall');
 SpiralMeasFileName.folder = '/home/ayde/University of Michigan Dropbox/Reina Ayde/MatlabProjects/rudy_matlab_script/rudy_tom_MRF_bssfp/';
 % SpiralMeasFileName.name = 'spiral_055T_MRF_FOV400mtx400_jesus_241118.mat'; %original from Jesus but acquired by Rudy
-SpiralMeasFileName.name = 'spiral_055T_MRF_FOV300_mtx300_rudy_241023.mat';
+%SpiralMeasFileName.name = 'spiral_055T_MRF_FOV300_mtx300_rudy_241023.mat';
 % SpiralMeasFileName.name = 'spiral_055T_MRF_FOV400mtx400_rudy_241118.mat'; %optimized 400/400 setting from Rudy
-% SpiralMeasFileName.name = 'spiral_055T_MRF_FOV300mtx300_rudy_241118.mat'; %optimized 300/300 setting from Rudy
+SpiralMeasFileName.name = 'spiral_055T_MRF_FOV300mtx300_rudy_241118.mat'; %optimized 300/300 setting from Rudy
 % SpiralMeasFileName.name = 'spiral_055T_MRF_FOV250mtx250_np96_M0_rudy_tra_250407'; %250/250 with np96
 %SpiralMeasFileName.name = 'Spiral_48_48_Mtx400_FOV400_0p55_Meas.dat';
 %SpMeasFileName = fullfile(RawData.folder,SpiralMeasFileName.name);
@@ -830,8 +830,12 @@ disp('DIP savings DONE!')
 % s_hor = 80:270;
 
 % brain 300
-s_vert = 50:350;
-s_hor = 50:350;
+s_vert = 40:260;
+s_hor = 60:300;
+
+% PHANTOM CHRIS
+% s_vert = 50:250;
+% s_hor = 50:250;
 
 a = squeeze(image_combined_3D(s_vert,s_hor,:,1));
 
@@ -841,9 +845,6 @@ mask_fit(s_vert,s_hor) = 1;
 
 
 %% LLR settings
-% addpath(genpath('/home/ayde/University of Michigan Dropbox/Reina Ayde/MatlabProjects/CardiacMRF_2D/Reconstruction Code/Gridding/'));
-% addpath(genpath('/home/ayde/University of Michigan Dropbox/Reina Ayde/MatlabProjects/CardiacMRF_2D/Reconstruction Code/Dictionary/LowRankRecon/'));
-% addpath(genpath('/home/ayde/University of Michigan Dropbox/Reina Ayde/MatlabProjects/CardiacMRF_2D/Reconstruction Code/Miscellaneous/'));
 raw_orig_Z = flip(transformKspaceToImage(raw_orig,3),3);
 readOSFactor=1;
 numSpiralArms=nproj;
@@ -1107,8 +1108,8 @@ addpath('./dependence');
 load('./Colormap/T2cm.mat');
 load('./Colormap/T1cm.mat');
 
-climst1 = [0, 2000]; %3000/1500
-climst2 = [0, 1000];  %2000/250
+climst1 = [0, 1500]; %3000/1500
+climst2 = [0, 300];  %2000/250
 % idx1 = [100:200];
 % idx2 = [100:200];
 idx1 = s_vert;
