@@ -40,7 +40,7 @@ GRAPPAz                 = 0;
 CalculateDict           = 1;    % if 0 => loads a pregen dictionary
 doFit                   = 1;    % do not run pm fit
         singleSliceFit  = 1;
-        sliceToFit      = 35;
+        sliceToFit      = 10;
 
 doSave                  = 1;
     tempfilename = ['recon_' date '_FISP'];
@@ -101,8 +101,8 @@ disp('open Siemens Raw data')
 % RawData.folder = 'E:\scanner_data\twix_data\250328\'; %NIST+optFA
  %RawData.folder = 'C:\Users\ayde\University of Michigan Dropbox\Reina Ayde\brain_1mmISO';
 %RawData.folder = 'C:\Users\ayde\University of Michigan Dropbox\Reina Ayde\HV3_forReina'; %P2
-RawData.folder = '/home/ayde/University of Michigan Dropbox/Reina Ayde/data_for_Reina_trajectorydesign+brain1x1x3/';
-%RawData.folder = '/home/ayde/University of Michigan Dropbox/Reina Ayde/NIST_0.55T_from_Chris_to_Reina/';
+% RawData.folder = '/home/ayde/University of Michigan Dropbox/Reina Ayde/data_for_Reina_trajectorydesign+brain1x1x3/';
+RawData.folder = '/home/ayde/University of Michigan Dropbox/Reina Ayde/NIST_0.55T_from_Chris_to_Reina/';
 
 
 if isTRUEFISP
@@ -145,7 +145,7 @@ else
     % RawData.name = 'meas_MID00188_FID12671_rrMRF_300_PF8_np48_tilted_FA15.dat'; % HV, FA15, titled
     
     %250221
-    RawData.name = 'meas_MID00547_FID01499_MRFbrain_FISP_FA15_np40o20_nex600_FA15.dat'; % HV2, FA15, Nex600
+    % RawData.name = 'meas_MID00547_FID01499_MRFbrain_FISP_FA15_np40o20_nex600_FA15.dat'; % HV2, FA15, Nex600
     % RawData.name = 'meas_MID00548_FID01500_MRFbrain_FISP_FA15_np40o20_nex1000_FA15.dat'; % HV2, FA15, Nex1000
     % RawData.name = 'meas_MID00549_FID01501_MRFbrain_FISP_FA10_np40o20_nex600_FA10.dat'; % HV2, FA10, Nex600
     % RawData.name = 'meas_MID00550_FID01502_MRFbrain_FISP_FA10_np40o20_nex1000_FA10.dat'; % HV2, FA10, Nex1000
@@ -177,8 +177,9 @@ else
 
     %rudy's data
     %RawData.name = 'meas_MID00561_FID01513_MRFbrain_FISP_FA15_np40o20.dat'; % P2, FA15, Nex600, wait1500
+
     %chris's data
-    % RawData.name = 'meas_MID01036_FID25469_NOOPT.dat';
+    RawData.name = 'meas_MID01036_FID25469_NOOPT.dat';
 
 end
 RawDataFileName = fullfile(RawData.folder,RawData.name);
@@ -265,18 +266,18 @@ end
 %% Setup acquisition parameter
 fprintf('Step 0: Setup Acquisition Parameters\n');
 
-folderTXT = '/home/ayde/University of Michigan Dropbox/Reina Ayde/HV3_forReina/rudy_tom_MRF_bssfp';
-trtxtfile = [folderTXT '/FISP_TR.txt'];
-tetxtfile = [folderTXT '/FISP_TE.txt'];
+% folderTXT = '/home/ayde/University of Michigan Dropbox/Reina Ayde/HV3_forReina/rudy_tom_MRF_bssfp';
+% trtxtfile = [folderTXT '/FISP_TR.txt'];
+% tetxtfile = [folderTXT '/FISP_TE.txt'];
 % %fatxtfile = [folderTXT '\FISP_FA_Body.txt'];
-fatxtfile = [folderTXT '/FISP_FA_body_x1_5.txt'];
+% fatxtfile = [folderTXT '/FISP_FA_body_x1_5.txt'];
 % %fatxtfile = [folderTXT '\FISP_FA_body_x2.txt'];
 % %fatxtfile = [folderTXT '\FISP_FA_Body_shifted.txt'];
 % % fatxtfile = [folderTXT '\FISP_FAopt_nex600_TR14_TE1_8_SC_EPG_GMWMort.txt'];
 % % fatxtfile = [folderTXT '\pSSFP_FAopt_nex600_TR13_TE1_8_SC_EPG_GMWMort.txt'];
-phtxtfile = [folderTXT '/FISP_PH.txt'];
+% phtxtfile = [folderTXT '/FISP_PH.txt'];
 
-% fatxtfile = [RawData.folder 'CK_FISP_FA_Body.txt'];
+fatxtfile = [RawData.folder 'CK_FISP_FA_Body.txt'];
 
 
 % log.FA = importdata(fatxtfile);
@@ -346,7 +347,7 @@ if CalculateDict
         % tetxtfile,trtxtfile,fatxtfile,phtxtfile,1,log.delay,2);
         % It's a similar function that takes directly the data and does not
         % load them from a txt file
-        [dict,r] = Calculate_MRF_FISP_DictwithDelays_(RawDataFileName,log.rawinfo,log.t1series,log.t2series,0, log.TE, log.TR, log.FA,PH,1,log.delay,2);
+        [dict,r] = Calculate_MRF_FISP_DictwithDelays_(RawDataFileName,log.rawinfo,log.t1series,log.t2series,0, log.TE, log.TR, log.FA,PH,1,log.delay,4);
 
         log.timeGen = toc;
         fprintf('Saving FISP dictionary \n')
@@ -410,18 +411,18 @@ end
 fprintf('Step 2: Prepare NUFFT \n');
 
 %load('./data/Spiral_Traj.mat','kxall','kyall');
-SpiralMeasFileName.folder = '/home/ayde/University of Michigan Dropbox/Reina Ayde/MatlabProjects/rudy_matlab_script/rudy_tom_MRF_bssfp/';
+% SpiralMeasFileName.folder = '/home/ayde/University of Michigan Dropbox/Reina Ayde/MatlabProjects/rudy_matlab_script/rudy_tom_MRF_bssfp/';
 % SpiralMeasFileName.name = 'spiral_055T_MRF_FOV400mtx400_jesus_241118.mat'; %original from Jesus but acquired by Rudy
 %SpiralMeasFileName.name = 'spiral_055T_MRF_FOV300_mtx300_rudy_241023.mat';
 % SpiralMeasFileName.name = 'spiral_055T_MRF_FOV400mtx400_rudy_241118.mat'; %optimized 400/400 setting from Rudy
-SpiralMeasFileName.name = 'spiral_055T_MRF_FOV300mtx300_rudy_241118.mat'; %optimized 300/300 setting from Rudy
+% SpiralMeasFileName.name = 'spiral_055T_MRF_FOV300mtx300_rudy_241118.mat'; %optimized 300/300 setting from Rudy
 % SpiralMeasFileName.name = 'spiral_055T_MRF_FOV250mtx250_np96_M0_rudy_tra_250407'; %250/250 with np96
-%SpiralMeasFileName.name = 'Spiral_48_48_Mtx400_FOV400_0p55_Meas.dat';
-%SpMeasFileName = fullfile(RawData.folder,SpiralMeasFileName.name);
-SpMeasFileName = fullfile(SpiralMeasFileName.folder,SpiralMeasFileName.name);
+SpiralMeasFileName.name = 'Spiral_48_48_Mtx400_FOV400_0p55_Meas.dat';
+SpMeasFileName = fullfile(RawData.folder,SpiralMeasFileName.name);
+% SpMeasFileName = fullfile(SpiralMeasFileName.folder,SpiralMeasFileName.name);
 
-load(SpMeasFileName)
-%[kxall,kyall] = GradTrajMeas(SpMeasFileName);
+% load(SpMeasFileName)
+[kxall,kyall] = GradTrajMeas(SpMeasFileName);
 
 % Prepare NUFFT
 
@@ -431,7 +432,7 @@ load(SpMeasFileName)
 % Calcuate kmax and the corresponding point
 [kmax_measured,uplimit]=max(sqrt(kxall(:,1).^2+kyall(:,1).^2));
 % remove additional points
-adcpad=10; % the ADC acquires 20 points before and after spiral: NOTE that the way I (rudy) measure spirals, has a pad of 10 points only! this affects the density compensation wrongly, otherwise!
+adcpad=0; % the ADC acquires 20 points before and after spiral: NOTE that the way I (rudy) measure spirals, has a pad of 10 points only! this affects the density compensation wrongly, otherwise!
 % account for the adcpad
 kx = kxall(1+adcpad:end-adcpad,:);
 ky = kyall(1+adcpad:end-adcpad,:);
@@ -480,7 +481,7 @@ G_fid_dcf = Gmri(k, mask, 'fov', N(1), 'basis', {'dirac'}, 'nufft', nufft_args);
 dcf_fid = reshape(abs(mri_density_comp_v2(k, 'pipe', 'G', G_fid_dcf.arg.Gnufft)),uplimit,size(kx,2));
 %dcf_fid = reshape(abs( mri_density_comp(k, 'pipe', 'G', G_fid_dcf.arg.Gnufft)),uplimit,size(kx,2));
 
-adcpad = 20; %MRF data are padded by 20 points
+adcpad = 0; %MRF data are padded by 20 points
 
 % dip setup
 j=1;
@@ -783,11 +784,11 @@ dip.coilmap = csm;
 %% DIP saving
 destFolder = fullfile(saveFolder, 'DIP/');
 Folder = 'FISP/';
-what = 'Brain_1x1x3_T1_2ms1000';
-%what = 'NIST_T2L_250328';
+%what = 'Brain_1x1x3_T1_2ms1000';
+what = 'NIST_CHRIS';
 % what = 'Brain_P1_250307_tilt';
 
-extraN = 'f300_Nex1000_FA15';
+extraN = 'f400_Nex1000';
 if ~PartialFourier
     tmp = flip(transformKspaceToImage(raw_orig,3),3);
     %tmp = transformKspaceToImage(raw_orig,3);
@@ -830,12 +831,12 @@ disp('DIP savings DONE!')
 % s_hor = 80:270;
 
 % brain 300
-s_vert = 40:260;
-s_hor = 60:300;
+% s_vert = 40:260;
+% s_hor = 60:300;
 
 % PHANTOM CHRIS
-% s_vert = 50:250;
-% s_hor = 50:250;
+s_vert = 50:350;
+s_hor = 50:350;
 
 a = squeeze(image_combined_3D(s_vert,s_hor,:,1));
 
@@ -1109,7 +1110,7 @@ load('./Colormap/T2cm.mat');
 load('./Colormap/T1cm.mat');
 
 climst1 = [0, 1500]; %3000/1500
-climst2 = [0, 300];  %2000/250
+climst2 = [0, 750];  %2000/250
 % idx1 = [100:200];
 % idx2 = [100:200];
 idx1 = s_vert;
