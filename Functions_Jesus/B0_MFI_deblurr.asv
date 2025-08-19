@@ -1,0 +1,236 @@
+%function Deblurred_image = MFI_deblur(KX, KY, vector, field_map, L)
+
+L = 10;
+KX = 2794;
+KY = 2794;
+read_time = KX * 2.5e-6;
+load('off_res.mat','masked2');
+load('Gridded_Kspace.mat','DeblurringKspace');
+load('spiral_k.mat','k');
+k = reshape(k,2,2794,48);
+%Milliseconds -> Seconds
+field_map = masked2;
+gridded_data = DeblurringKspace;
+
+%% DEFINE FREQUENCY SEGMENTS
+%======================================================================
+delta = (max(field_map(:)) - min(field_map(:)))/L*2*pi; % freq spacing
+deltaw = linspace(max(field_map(:)), min(field_map(:)),L+1)*2*pi; % array of frequencies
+field_map;      
+
+%% CREATE time map
+%======================================================================
+time = linspace(0,read_time,KX);
+w = size(gridded_data,1);
+t_arr = zeros(w);
+
+Y = 2*max(k, [], 'all'); %Size of K-space side
+D = Y/w; %pixel size of k-space
+
+for i = 1:size(k,3)
+    for j = 1:size(k,2)
+        t_arr(floor(k(1,i,j)/(2*D)+Y/(2*D)) , floor(k(2,i,j)/(2*D)+Y/(2*D))) = time(j);
+    end
+end
+
+
+%{
+subplot()
+imagesc((vq));
+title('Subplot 4')
+colorbar
+
+
+[h,w] = size(gridded_data);
+phase_mask = zeros(w);
+for x = 1:1:w
+    for y = 1:1:w
+        tot_t = read_time;
+        max_d = w/2;
+        p = [x-(w/2),y-(w/2)];
+        d = sqrt( p(1)^2 + p(2)^2 );
+        t = tot_t * (d/max_d);
+        phase_mask(x, y) = exp( 1i * delta * t);
+    end
+end
+subplot()
+imagesc(abs(phase_mask));
+title('Subplot 4')
+colorbar
+
+%% DEMODULATE DATA AT CENTRAL FREQUENCY PRIOR TO GRIDDING
+%======================================================================
+dw_o_freq = deltaw(L/2+1);%max(field_map(:)) - (max(field_map(:)) - min(field_map(:)))/2
+time = linspace(0,read_time,KX);
+disp(size(KX))
+disp(size(dw_o_freq))
+disp(size(time))
+data = data .* exp(-1i * dw_o_freq * time);
+
+Deblurred_image = zeros(lenght(KX))
+
+
+
+%end
+
+
+myParams = struct(...
+    'SubsystemA',struct(...
+        'Gain',15.23,...
+        'Offset',89,...
+        'Init',0.59),...
+    'SubsystemB',struct(...
+        'Coeffs',[5.32 7.99],...
+        'Offset',57,...
+        'Init1',1.76,...
+        'Init2',2.76)...
+); % THIS IS THE STRUCTURE OF PARAMETERS
+
+
+%OFFRESONANCECORRECTION Corrects an image retrieved by spiral imaging from
+%off-resonance effects.
+% Reconstructs an image acquired through spiral imaging
+%
+%
+% Input:
+% vector        A struct containing scan sequence real and imaginary data.
+% field_map     A matrix with the frequncy plotted against spatial
+%               position.
+% L             Number of demodulation frequencies.
+%
+% params        Struct containing parameters
+%   readTime    Read-out time of scan in milliseconds.
+%   FOV         Field of view in millimeters.
+%   res         Resolution of FOV mm/pixel.
+%   imSize      Image size in millimeters.
+%   imRes       Image resolution in mm/pixel.
+%
+% recon_method  String for selecting reconstruction method
+%               'fsc' for frequency segmented conjugate phase recon
+%               'mfi' for multi-frequency interpolation
+%
+%
+% Output:% 
+% C             A struct containing the corrected image and phasemask.
+% C.im          The normalized reconstructed image.
+% C.L           Number of demodulation frequencies used in the
+%               reconstruction.
+%=========================================================================
+%Milliseconds -> Seconds
+read_time = params.readTime*1e-3;
+%k-space data
+data = 1i*vector.real + vector.imag;
+
+%% DEFINE FREQUENCY SEGMENTS
+%======================================================================
+delta = (max(field_map(:)) - min(field_map(:)))/L*2*pi;
+deltaw = linspace(max(field_map(:)), min(field_map(:)),L+1)*2*pi;
+
+%% DEMODULATE DATA AT CENTRAL FREQUENCY PRIOR TO GRIDDING
+%======================================================================
+dw_o_freq = deltaw(L/2+1);%max(field_map(:)) - (max(field_map(:)) - min(field_map(:)))/2
+time = linspace(0,read_time,length(data));
+data = data .* exp(-1i * dw_o_freq * time);
+
+%% GRID DATA ONTO A CARTESIAN GRID
+%======================================================================
+gridded_data = gridData(data,vector,params);
+
+%% CREATE A PHASE MASK FOR DEMODULATING DATA
+%======================================================================
+[h,w] = size(gridded_data);
+phase_mask = zeros(w);
+for x = 1:1:w
+    for y = 1:1:w
+        tot_t = read_time;
+        max_d = w/2;
+        p = [x-(w/2),y-(w/2)];
+        d = sqrt( p(1)^2 + p(2)^2 );
+        t = tot_t * (d/max_d);
+        phase_mask(x, y) = exp( 1i * delta * t);
+    end
+end
+
+%% DEMODULATE DATA AT L DIFFERENT FREQUENCIES
+%======================================================================
+images = zeros(w);
+transf = gridded_data;images(:,:,L/2+1) = transf;
+
+%The gridded data is now repeatedly multiplied by the phase mask...
+for ii = 1:L/2
+    transf = transf .* phase_mask;
+    images(:,:,L/2 + 1 + ii) = transf;
+end
+
+%...and its complex conjugate and ifft to create a set of images
+transf = gridded_data;
+for ii = 1:L/2
+    transf = transf .* conj(phase_mask);
+    images(:,:,L/2 + 1 - ii) = transf;
+end
+
+% Transform images
+images = ifft2(images);
+
+%% FINAL IMAGE RECONSTRUCTION
+%======================================================================
+%This part is different for Multi-frequency interpolation and
+%frequency-segmented conjugate phase reconstruction.
+switch (recon_method)
+case 'fsc' %Frequency-segmented conjugate phase reconstruction
+
+%Choose the pixel from the image demodulated at the closest frequency to
+%that of the field map value at the pixel.
+[fh, fw] = size(field_map);
+final_image = gridded_data;
+for x = 1:fw
+    for y = 1:fh
+        px_freq = field_map(x,y)*2*pi;
+        [~,idx] = min(abs(deltaw-px_freq));
+        final_image(x,y) = images(x,y,idx);
+    end
+end
+
+case 'mfi'
+
+%Multi-frequency interpolation conjugate phase reconstruction
+
+% Generate interpolation coefficients
+%========================================
+num_of_interp = 1000;%round(1000/L);
+tk = 64;
+timesamples = linspace(0,read_time,tk);
+interpolation_omegas = linspace(min(field_map(:)),max(field_map(:)),num_of_interp)*2*pi;
+% Approximate the linear combination coefficients using least squares
+deltawi_tk = exp(1i * timesamples.' * deltaw );
+y = exp(1i*timesamples.'*interpolation_omegas);
+coeff_table = (deltawi_tk \ y).';%Create final image
+
+%========================================
+%Add the pixels together over the images using the interpolation
+%coefficients
+[fh, fw] = size(field_map);
+%permute images for faster calcualation
+images = permute(images,[2 3 1]);
+final_image = zeros(fh,fw);
+for x = 1:fw
+    for y = 1:fh
+        px_omega = field_map(x,y)*2*pi;
+        [~, idx] = min(abs(interpolation_omegas - px_omega));
+        final_image(x,y) = coeff_table(idx,:) * images(y,:,x).';
+    end
+end
+end
+
+
+%Normalisation of the image
+mi = min(final_image(:));
+final_image = final_image - mi;
+ma = max(final_image(:));
+final_image = final_image/ma;
+
+%Insert into struct
+C.im = final_image;
+C.L = L;
+return
+%}

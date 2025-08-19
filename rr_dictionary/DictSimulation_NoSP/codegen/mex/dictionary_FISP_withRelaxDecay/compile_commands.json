@@ -1,0 +1,98 @@
+[
+  {
+    "directory": "E:\\POSTDOC_UoM\\08_Project_MRF\\3D_MRF_FISP_Prostate-main_d240531\\rr_dictionary\\DictSimulation_NoSP\\codegen\\mex\\dictionary_FISP_withRelaxDecay",
+    "command": "cl /c /Zc:__cplusplus /Zp8 /GR /W3 /EHs /nologo /MD /D_CRT_SECURE_NO_DEPRECATE /D_SCL_SECURE_NO_DEPRECATE /D_SECURE_SCL=0   /DMATLAB_MEX_FILE  /DMATLAB_MEX_FILE /O2 /Oy- /DNDEBUG /fp:strict /utf-8 /I \".\" /I \"E:\\POSTDOC_UoM\\08_Project_MRF\\3D_MRF_FISP_Prostate-main_d240531\\rr_dictionary\\DictSimulation_NoSP\" /I \".\\interface\" /I \"C:\\Program Files\\MATLAB\\R2024a\\extern\\include\" /I \".\" -DMODEL=dictionary_FISP_withRelaxDecay_mex -DMW_NEEDS_VERSION_H /wd4251  dictionary_FISP_withRelaxDecay_data.cpp /Fobuild\\win64\\dictionary_FISP_withRelaxDecay_data.obj",
+    "file": "dictionary_FISP_withRelaxDecay_data.cpp",
+    "output": "build/win64/dictionary_FISP_withRelaxDecay_data.obj"
+  },
+  {
+    "directory": "E:\\POSTDOC_UoM\\08_Project_MRF\\3D_MRF_FISP_Prostate-main_d240531\\rr_dictionary\\DictSimulation_NoSP\\codegen\\mex\\dictionary_FISP_withRelaxDecay",
+    "command": "cl /c /Zc:__cplusplus /Zp8 /GR /W3 /EHs /nologo /MD /D_CRT_SECURE_NO_DEPRECATE /D_SCL_SECURE_NO_DEPRECATE /D_SECURE_SCL=0   /DMATLAB_MEX_FILE  /DMATLAB_MEX_FILE /O2 /Oy- /DNDEBUG /fp:strict /utf-8 /I \".\" /I \"E:\\POSTDOC_UoM\\08_Project_MRF\\3D_MRF_FISP_Prostate-main_d240531\\rr_dictionary\\DictSimulation_NoSP\" /I \".\\interface\" /I \"C:\\Program Files\\MATLAB\\R2024a\\extern\\include\" /I \".\" -DMODEL=dictionary_FISP_withRelaxDecay_mex -DMW_NEEDS_VERSION_H /wd4251  rt_nonfinite.cpp /Fobuild\\win64\\rt_nonfinite.obj",
+    "file": "rt_nonfinite.cpp",
+    "output": "build/win64/rt_nonfinite.obj"
+  },
+  {
+    "directory": "E:\\POSTDOC_UoM\\08_Project_MRF\\3D_MRF_FISP_Prostate-main_d240531\\rr_dictionary\\DictSimulation_NoSP\\codegen\\mex\\dictionary_FISP_withRelaxDecay",
+    "command": "cl /c /Zc:__cplusplus /Zp8 /GR /W3 /EHs /nologo /MD /D_CRT_SECURE_NO_DEPRECATE /D_SCL_SECURE_NO_DEPRECATE /D_SECURE_SCL=0   /DMATLAB_MEX_FILE  /DMATLAB_MEX_FILE /O2 /Oy- /DNDEBUG /fp:strict /utf-8 /I \".\" /I \"E:\\POSTDOC_UoM\\08_Project_MRF\\3D_MRF_FISP_Prostate-main_d240531\\rr_dictionary\\DictSimulation_NoSP\" /I \".\\interface\" /I \"C:\\Program Files\\MATLAB\\R2024a\\extern\\include\" /I \".\" -DMODEL=dictionary_FISP_withRelaxDecay_mex -DMW_NEEDS_VERSION_H /wd4251  dictionary_FISP_withRelaxDecay_initialize.cpp /Fobuild\\win64\\dictionary_FISP_withRelaxDecay_initialize.obj",
+    "file": "dictionary_FISP_withRelaxDecay_initialize.cpp",
+    "output": "build/win64/dictionary_FISP_withRelaxDecay_initialize.obj"
+  },
+  {
+    "directory": "E:\\POSTDOC_UoM\\08_Project_MRF\\3D_MRF_FISP_Prostate-main_d240531\\rr_dictionary\\DictSimulation_NoSP\\codegen\\mex\\dictionary_FISP_withRelaxDecay",
+    "command": "cl /c /Zc:__cplusplus /Zp8 /GR /W3 /EHs /nologo /MD /D_CRT_SECURE_NO_DEPRECATE /D_SCL_SECURE_NO_DEPRECATE /D_SECURE_SCL=0   /DMATLAB_MEX_FILE  /DMATLAB_MEX_FILE /O2 /Oy- /DNDEBUG /fp:strict /utf-8 /I \".\" /I \"E:\\POSTDOC_UoM\\08_Project_MRF\\3D_MRF_FISP_Prostate-main_d240531\\rr_dictionary\\DictSimulation_NoSP\" /I \".\\interface\" /I \"C:\\Program Files\\MATLAB\\R2024a\\extern\\include\" /I \".\" -DMODEL=dictionary_FISP_withRelaxDecay_mex -DMW_NEEDS_VERSION_H /wd4251  dictionary_FISP_withRelaxDecay_terminate.cpp /Fobuild\\win64\\dictionary_FISP_withRelaxDecay_terminate.obj",
+    "file": "dictionary_FISP_withRelaxDecay_terminate.cpp",
+    "output": "build/win64/dictionary_FISP_withRelaxDecay_terminate.obj"
+  },
+  {
+    "directory": "E:\\POSTDOC_UoM\\08_Project_MRF\\3D_MRF_FISP_Prostate-main_d240531\\rr_dictionary\\DictSimulation_NoSP\\codegen\\mex\\dictionary_FISP_withRelaxDecay",
+    "command": "cl /c /Zc:__cplusplus /Zp8 /GR /W3 /EHs /nologo /MD /D_CRT_SECURE_NO_DEPRECATE /D_SCL_SECURE_NO_DEPRECATE /D_SECURE_SCL=0   /DMATLAB_MEX_FILE  /DMATLAB_MEX_FILE /O2 /Oy- /DNDEBUG /fp:strict /utf-8 /I \".\" /I \"E:\\POSTDOC_UoM\\08_Project_MRF\\3D_MRF_FISP_Prostate-main_d240531\\rr_dictionary\\DictSimulation_NoSP\" /I \".\\interface\" /I \"C:\\Program Files\\MATLAB\\R2024a\\extern\\include\" /I \".\" -DMODEL=dictionary_FISP_withRelaxDecay_mex -DMW_NEEDS_VERSION_H /wd4251  dictionary_FISP_withRelaxDecay.cpp /Fobuild\\win64\\dictionary_FISP_withRelaxDecay.obj",
+    "file": "dictionary_FISP_withRelaxDecay.cpp",
+    "output": "build/win64/dictionary_FISP_withRelaxDecay.obj"
+  },
+  {
+    "directory": "E:\\POSTDOC_UoM\\08_Project_MRF\\3D_MRF_FISP_Prostate-main_d240531\\rr_dictionary\\DictSimulation_NoSP\\codegen\\mex\\dictionary_FISP_withRelaxDecay",
+    "command": "cl /c /Zc:__cplusplus /Zp8 /GR /W3 /EHs /nologo /MD /D_CRT_SECURE_NO_DEPRECATE /D_SCL_SECURE_NO_DEPRECATE /D_SECURE_SCL=0   /DMATLAB_MEX_FILE  /DMATLAB_MEX_FILE /O2 /Oy- /DNDEBUG /fp:strict /utf-8 /I \".\" /I \"E:\\POSTDOC_UoM\\08_Project_MRF\\3D_MRF_FISP_Prostate-main_d240531\\rr_dictionary\\DictSimulation_NoSP\" /I \".\\interface\" /I \"C:\\Program Files\\MATLAB\\R2024a\\extern\\include\" /I \".\" -DMODEL=dictionary_FISP_withRelaxDecay_mex -DMW_NEEDS_VERSION_H /wd4251  assertValidSizeArg.cpp /Fobuild\\win64\\assertValidSizeArg.obj",
+    "file": "assertValidSizeArg.cpp",
+    "output": "build/win64/assertValidSizeArg.obj"
+  },
+  {
+    "directory": "E:\\POSTDOC_UoM\\08_Project_MRF\\3D_MRF_FISP_Prostate-main_d240531\\rr_dictionary\\DictSimulation_NoSP\\codegen\\mex\\dictionary_FISP_withRelaxDecay",
+    "command": "cl /c /Zc:__cplusplus /Zp8 /GR /W3 /EHs /nologo /MD /D_CRT_SECURE_NO_DEPRECATE /D_SCL_SECURE_NO_DEPRECATE /D_SECURE_SCL=0   /DMATLAB_MEX_FILE  /DMATLAB_MEX_FILE /O2 /Oy- /DNDEBUG /fp:strict /utf-8 /I \".\" /I \"E:\\POSTDOC_UoM\\08_Project_MRF\\3D_MRF_FISP_Prostate-main_d240531\\rr_dictionary\\DictSimulation_NoSP\" /I \".\\interface\" /I \"C:\\Program Files\\MATLAB\\R2024a\\extern\\include\" /I \".\" -DMODEL=dictionary_FISP_withRelaxDecay_mex -DMW_NEEDS_VERSION_H /wd4251  throt.cpp /Fobuild\\win64\\throt.obj",
+    "file": "throt.cpp",
+    "output": "build/win64/throt.obj"
+  },
+  {
+    "directory": "E:\\POSTDOC_UoM\\08_Project_MRF\\3D_MRF_FISP_Prostate-main_d240531\\rr_dictionary\\DictSimulation_NoSP\\codegen\\mex\\dictionary_FISP_withRelaxDecay",
+    "command": "cl /c /Zc:__cplusplus /Zp8 /GR /W3 /EHs /nologo /MD /D_CRT_SECURE_NO_DEPRECATE /D_SCL_SECURE_NO_DEPRECATE /D_SECURE_SCL=0   /DMATLAB_MEX_FILE  /DMATLAB_MEX_FILE /O2 /Oy- /DNDEBUG /fp:strict /utf-8 /I \".\" /I \"E:\\POSTDOC_UoM\\08_Project_MRF\\3D_MRF_FISP_Prostate-main_d240531\\rr_dictionary\\DictSimulation_NoSP\" /I \".\\interface\" /I \"C:\\Program Files\\MATLAB\\R2024a\\extern\\include\" /I \".\" -DMODEL=dictionary_FISP_withRelaxDecay_mex -DMW_NEEDS_VERSION_H /wd4251  warning.cpp /Fobuild\\win64\\warning.obj",
+    "file": "warning.cpp",
+    "output": "build/win64/warning.obj"
+  },
+  {
+    "directory": "E:\\POSTDOC_UoM\\08_Project_MRF\\3D_MRF_FISP_Prostate-main_d240531\\rr_dictionary\\DictSimulation_NoSP\\codegen\\mex\\dictionary_FISP_withRelaxDecay",
+    "command": "cl /c /Zc:__cplusplus /Zp8 /GR /W3 /EHs /nologo /MD /D_CRT_SECURE_NO_DEPRECATE /D_SCL_SECURE_NO_DEPRECATE /D_SECURE_SCL=0   /DMATLAB_MEX_FILE  /DMATLAB_MEX_FILE /O2 /Oy- /DNDEBUG /fp:strict /utf-8 /I \".\" /I \"E:\\POSTDOC_UoM\\08_Project_MRF\\3D_MRF_FISP_Prostate-main_d240531\\rr_dictionary\\DictSimulation_NoSP\" /I \".\\interface\" /I \"C:\\Program Files\\MATLAB\\R2024a\\extern\\include\" /I \".\" -DMODEL=dictionary_FISP_withRelaxDecay_mex -DMW_NEEDS_VERSION_H /wd4251  mtimes.cpp /Fobuild\\win64\\mtimes.obj",
+    "file": "mtimes.cpp",
+    "output": "build/win64/mtimes.obj"
+  },
+  {
+    "directory": "E:\\POSTDOC_UoM\\08_Project_MRF\\3D_MRF_FISP_Prostate-main_d240531\\rr_dictionary\\DictSimulation_NoSP\\codegen\\mex\\dictionary_FISP_withRelaxDecay",
+    "command": "cl /c /Zc:__cplusplus /Zp8 /GR /W3 /EHs /nologo /MD /D_CRT_SECURE_NO_DEPRECATE /D_SCL_SECURE_NO_DEPRECATE /D_SECURE_SCL=0   /DMATLAB_MEX_FILE  /DMATLAB_MEX_FILE /O2 /Oy- /DNDEBUG /fp:strict /utf-8 /I \".\" /I \"E:\\POSTDOC_UoM\\08_Project_MRF\\3D_MRF_FISP_Prostate-main_d240531\\rr_dictionary\\DictSimulation_NoSP\" /I \".\\interface\" /I \"C:\\Program Files\\MATLAB\\R2024a\\extern\\include\" /I \".\" -DMODEL=dictionary_FISP_withRelaxDecay_mex -DMW_NEEDS_VERSION_H /wd4251  mean.cpp /Fobuild\\win64\\mean.obj",
+    "file": "mean.cpp",
+    "output": "build/win64/mean.obj"
+  },
+  {
+    "directory": "E:\\POSTDOC_UoM\\08_Project_MRF\\3D_MRF_FISP_Prostate-main_d240531\\rr_dictionary\\DictSimulation_NoSP\\codegen\\mex\\dictionary_FISP_withRelaxDecay",
+    "command": "cl /c /Zc:__cplusplus /Zp8 /GR /W3 /EHs /nologo /MD /D_CRT_SECURE_NO_DEPRECATE /D_SCL_SECURE_NO_DEPRECATE /D_SECURE_SCL=0   /DMATLAB_MEX_FILE  /DMATLAB_MEX_FILE /O2 /Oy- /DNDEBUG /fp:strict /utf-8 /I \".\" /I \"E:\\POSTDOC_UoM\\08_Project_MRF\\3D_MRF_FISP_Prostate-main_d240531\\rr_dictionary\\DictSimulation_NoSP\" /I \".\\interface\" /I \"C:\\Program Files\\MATLAB\\R2024a\\extern\\include\" /I \".\" -DMODEL=dictionary_FISP_withRelaxDecay_mex -DMW_NEEDS_VERSION_H /wd4251  sumMatrixIncludeNaN.cpp /Fobuild\\win64\\sumMatrixIncludeNaN.obj",
+    "file": "sumMatrixIncludeNaN.cpp",
+    "output": "build/win64/sumMatrixIncludeNaN.obj"
+  },
+  {
+    "directory": "E:\\POSTDOC_UoM\\08_Project_MRF\\3D_MRF_FISP_Prostate-main_d240531\\rr_dictionary\\DictSimulation_NoSP\\codegen\\mex\\dictionary_FISP_withRelaxDecay",
+    "command": "cl /c /Zc:__cplusplus /Zp8 /GR /W3 /EHs /nologo /MD /D_CRT_SECURE_NO_DEPRECATE /D_SCL_SECURE_NO_DEPRECATE /D_SECURE_SCL=0   /DMATLAB_MEX_FILE  /DMATLAB_MEX_FILE /O2 /Oy- /DNDEBUG /fp:strict /utf-8 /I \".\" /I \"E:\\POSTDOC_UoM\\08_Project_MRF\\3D_MRF_FISP_Prostate-main_d240531\\rr_dictionary\\DictSimulation_NoSP\" /I \".\\interface\" /I \"C:\\Program Files\\MATLAB\\R2024a\\extern\\include\" /I \".\" -DMODEL=dictionary_FISP_withRelaxDecay_mex -DMW_NEEDS_VERSION_H /wd4251  interface\\_coder_dictionary_FISP_withRelaxDecay_api.cpp /Fobuild\\win64\\_coder_dictionary_FISP_withRelaxDecay_api.obj",
+    "file": "interface/_coder_dictionary_FISP_withRelaxDecay_api.cpp",
+    "output": "build/win64/_coder_dictionary_FISP_withRelaxDecay_api.obj"
+  },
+  {
+    "directory": "E:\\POSTDOC_UoM\\08_Project_MRF\\3D_MRF_FISP_Prostate-main_d240531\\rr_dictionary\\DictSimulation_NoSP\\codegen\\mex\\dictionary_FISP_withRelaxDecay",
+    "command": "cl /c /Zc:__cplusplus /Zp8 /GR /W3 /EHs /nologo /MD /D_CRT_SECURE_NO_DEPRECATE /D_SCL_SECURE_NO_DEPRECATE /D_SECURE_SCL=0   /DMATLAB_MEX_FILE  /DMATLAB_MEX_FILE /O2 /Oy- /DNDEBUG /fp:strict /utf-8 /I \".\" /I \"E:\\POSTDOC_UoM\\08_Project_MRF\\3D_MRF_FISP_Prostate-main_d240531\\rr_dictionary\\DictSimulation_NoSP\" /I \".\\interface\" /I \"C:\\Program Files\\MATLAB\\R2024a\\extern\\include\" /I \".\" -DMODEL=dictionary_FISP_withRelaxDecay_mex -DMW_NEEDS_VERSION_H /wd4251  interface\\_coder_dictionary_FISP_withRelaxDecay_mex.cpp /Fobuild\\win64\\_coder_dictionary_FISP_withRelaxDecay_mex.obj",
+    "file": "interface/_coder_dictionary_FISP_withRelaxDecay_mex.cpp",
+    "output": "build/win64/_coder_dictionary_FISP_withRelaxDecay_mex.obj"
+  },
+  {
+    "directory": "E:\\POSTDOC_UoM\\08_Project_MRF\\3D_MRF_FISP_Prostate-main_d240531\\rr_dictionary\\DictSimulation_NoSP\\codegen\\mex\\dictionary_FISP_withRelaxDecay",
+    "command": "cl /c /Zc:__cplusplus /Zp8 /GR /W3 /EHs /nologo /MD /D_CRT_SECURE_NO_DEPRECATE /D_SCL_SECURE_NO_DEPRECATE /D_SECURE_SCL=0   /DMATLAB_MEX_FILE  /DMATLAB_MEX_FILE /O2 /Oy- /DNDEBUG /fp:strict /utf-8 /I \".\" /I \"E:\\POSTDOC_UoM\\08_Project_MRF\\3D_MRF_FISP_Prostate-main_d240531\\rr_dictionary\\DictSimulation_NoSP\" /I \".\\interface\" /I \"C:\\Program Files\\MATLAB\\R2024a\\extern\\include\" /I \".\" -DMODEL=dictionary_FISP_withRelaxDecay_mex -DMW_NEEDS_VERSION_H /wd4251  eml_int_forloop_overflow_check.cpp /Fobuild\\win64\\eml_int_forloop_overflow_check.obj",
+    "file": "eml_int_forloop_overflow_check.cpp",
+    "output": "build/win64/eml_int_forloop_overflow_check.obj"
+  },
+  {
+    "directory": "E:\\POSTDOC_UoM\\08_Project_MRF\\3D_MRF_FISP_Prostate-main_d240531\\rr_dictionary\\DictSimulation_NoSP\\codegen\\mex\\dictionary_FISP_withRelaxDecay",
+    "command": "cl /c /Zc:__cplusplus /Zp8 /GR /W3 /EHs /nologo /MD /D_CRT_SECURE_NO_DEPRECATE /D_SCL_SECURE_NO_DEPRECATE /D_SECURE_SCL=0   /DMATLAB_MEX_FILE  /DMATLAB_MEX_FILE /O2 /Oy- /DNDEBUG /fp:strict /utf-8 /I \".\" /I \"E:\\POSTDOC_UoM\\08_Project_MRF\\3D_MRF_FISP_Prostate-main_d240531\\rr_dictionary\\DictSimulation_NoSP\" /I \".\\interface\" /I \"C:\\Program Files\\MATLAB\\R2024a\\extern\\include\" /I \".\" -DMODEL=dictionary_FISP_withRelaxDecay_mex -DMW_NEEDS_VERSION_H /wd4251  interface\\_coder_dictionary_FISP_withRelaxDecay_info.cpp /Fobuild\\win64\\_coder_dictionary_FISP_withRelaxDecay_info.obj",
+    "file": "interface/_coder_dictionary_FISP_withRelaxDecay_info.cpp",
+    "output": "build/win64/_coder_dictionary_FISP_withRelaxDecay_info.obj"
+  },
+  {
+    "directory": "E:\\POSTDOC_UoM\\08_Project_MRF\\3D_MRF_FISP_Prostate-main_d240531\\rr_dictionary\\DictSimulation_NoSP\\codegen\\mex\\dictionary_FISP_withRelaxDecay",
+    "command": "cl /c /Zc:__cplusplus /Zp8 /GR /W3 /EHs /nologo /MD /D_CRT_SECURE_NO_DEPRECATE /D_SCL_SECURE_NO_DEPRECATE /D_SECURE_SCL=0   /DMATLAB_MEX_FILE  /DMATLAB_MEX_FILE /O2 /Oy- /DNDEBUG /fp:strict /utf-8 /I \".\" /I \"E:\\POSTDOC_UoM\\08_Project_MRF\\3D_MRF_FISP_Prostate-main_d240531\\rr_dictionary\\DictSimulation_NoSP\" /I \".\\interface\" /I \"C:\\Program Files\\MATLAB\\R2024a\\extern\\include\" /I \".\" -DMODEL=dictionary_FISP_withRelaxDecay_mex -DMW_NEEDS_VERSION_H /wd4251  \"C:\\Program Files\\MATLAB\\R2024a\\extern\\version\\cpp_mexapi_version.cpp\" /Fobuild\\win64\\cpp_mexapi_version.obj",
+    "file": "C:/Program Files/MATLAB/R2024a/extern/version/cpp_mexapi_version.cpp",
+    "output": "build/win64/cpp_mexapi_version.obj"
+  }
+]

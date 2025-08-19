@@ -1,0 +1,15 @@
+pulseduration=2000;
+BandWidthTimeProduct=8;
+sliceThickness=5;
+baseTR=12000;
+fatxtfile = 'FISP_FA_Body.txt';
+theta = textread(fatxtfile,'%f\b');
+tr=zeros(3000,1);
+NumOfFrames=3000;
+InvPerFrames=5000;
+
+
+[dict,r] = calcFISP_dict_highres(pulseduration,BandWidthTimeProduct,sliceThickness,baseTR,theta,tr,NumOfFrames,InvPerFrames);
+
+filename = strcat('Dict_FISP_fixedTR_B1factor_1.mat');
+save(fullfile('/media/yun/data2017/Dict_WIP/',filename),'dict','r','-v7.3');

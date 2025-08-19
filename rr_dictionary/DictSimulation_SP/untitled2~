@@ -1,0 +1,12 @@
+foldername = '/media/yun/data2017/MFF with Gregor/MFF_20171124/seq/Appl_5';
+
+FA = textread(fullfile(foldername,'FA.txt'));
+PH = textread(fullfile(foldername,'PH.txt'));
+TE = textread(fullfile(foldername,'TE.txt'));
+TR = textread(fullfile(foldername,'TR.txt'));
+grad = textread(fullfile(foldername,'MZ_ENDTR.txt'));
+subplot(511);plot(1:3000,FA(1:3000));
+subplot(512);plot(1:3000,PH(1:3000));
+subplot(513);plot(1:3000,TE(1:3000));
+subplot(514);plot(1:3000,TR(1:3000));
+subplot(515);plot(1:3000,grad(1:3000));

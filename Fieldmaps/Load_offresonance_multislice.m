@@ -1,0 +1,321 @@
+function LPF = Load_offresonance_multislice(filename)%, maskbase)
+
+% function Offres = OffResMap( filename )x  
+% Script to load Off-Resonance map using
+% 2 TE echoes.
+% filename is the .dat raw Siemens data
+% Maskbase is the through-time MRF average image
+% loaded in order of doing a mask.
+% This 1.0 version doesn't handle any B0 data shape
+% for multislice B0 maps
+% Jesus Fajardo (jesuserf@med.umich.edu)
+
+set(gca,'DefaultTextFontSize',28);
+%clear;clc;close all;
+%cd('./data/');
+addpath('./dependence');
+addpath('./OpenSiemensRawData');
+addpath('./Functions_Jesus/');
+addpath('./data/');
+%addpath('./data/896/');
+%cd('..');
+
+
+%% Open Siemens 2D Raw data
+%filename = 'data/meas_MID01726_FID44698_AdjGre'
+    
+
+raw = mapVBVD(filename);
+raw = raw{2}; %not using noise data
+
+
+
+
+raw = squeeze(raw.image( :, :, :, :, :, :, :, :, :, :, :)); % Select slice in 5th pos
+disp(size(raw))
+
+FOV = 400; %Field of view
+LPF = zeros(FOV,FOV,size(raw,4));
+for nn = 1:size(raw,4),
+    disp('Slice:')
+    nn
+
+    %disp(size(raw))
+    data1 = squeeze(raw( :, :, :, nn, 1)); % TE 1 data
+    data2 = squeeze(raw( :, :, :, nn, 2)); % TE 2 data
+
+    %data2 = squeeze(raw( :, :, :, :, 4, :, :, :, :, :, 2)); % TE 2 data
+    %data1 = squeeze(raw.image( :, :, :, :, :, :, :, 1, :, :, :)); % TE 1 data
+    %data2 = squeeze(raw.image( :, :, :, :, :, :, :, 2, :, :, :)); % TE 2 data
+
+
+    %Nc =size(data1,2); %Number of coils
+    [~,Nc,~] = size(data1);
+
+    %% Classic FFT
+    fprintf('FFT...\n')
+    image1 = zeros(FOV*2,FOV,Nc);
+    image2 = zeros(FOV*2,FOV,Nc);
+
+    for i = 1:Nc
+        image1(:,:,i) = fftshift(ifft2(ChangeArraySize(squeeze(data1(:,i,:)),[FOV*2,FOV])));
+        image2(:,:,i) = fftshift(ifft2(ChangeArraySize(squeeze(data2(:,i,:)),[FOV*2,FOV])));
+    end
+
+
+    %image1 = fftshift(ifft2(squeeze(data1(:,1,:))));
+    %disp(size(image1))
+    %subplot();
+    %imagesc(abs(squeeze(image2(:,:,1))))
+    %pause(999999999999999999999999999999)
+
+    %% Coil Sensitivity Map estimation
+    fprintf('Step 4: Estimate coil sensitivities and perform the coil combination... \n');
+
+    avg_image1 = sum(image1,3);
+    avg_image2 = sum(image2,3);
+    csm1 = estimate_csm_walsh(avg_image1);
+    csm2 = estimate_csm_walsh(avg_image2);
+
+    %subplot();
+    %imagesc(abs(squeeze(csm1(:,:,8))));
+
+
+    %% Perform coil combination
+    image_combined1 = single(zeros(size(data1,1),size(data1,3),Nc));
+    image_combined2 = single(zeros(size(data2,1),size(data2,3),Nc));
+
+    image_combined1 = sum(image1.*conj(csm1),3)./sum(csm1.*conj(csm1),3);
+    image_combined2 = sum(image2.*conj(csm2),3)./sum(csm2.*conj(csm2),3);
+
+    image_combined1 = image_combined1((2*FOV)/4+1:3*(2*FOV)/4,:); %
+    image_combined2 = image_combined2((2*FOV)/4+1:3*(2*FOV)/4,:);
+    %image_combined1 = image_combined1(size(image_combined1,1)/4:3*size(image_combined1,1)/4-1,:); % center image and (JESUS added -1)
+    %image_combined2 = image_combined2(size(image_combined2,1)/4:3*size(image_combined2,1)/4-1,:); % remove oversampling
+
+    %% Calculate Off-resonance map
+    Delta_Phi = angle(image_combined2)-angle(image_combined1);
+
+
+    %Delta_Phi = unwrap_phase(Delta_Phi); %unwrap phase
+    %Delta_Phi = sunwrap(Delta_Phi); %unwrap phase
+    Delta_Phi = Unwrap_TIE_DCT_Iter(Delta_Phi); %unwrap phase
+    %Delta_Phi = qualityGuidedUnwrapping(Delta_Phi); %unwrap phase
+    %Delta_T = (8.61e-3 - 3.85e-3); % 1.5 T
+    Delta_T = (4.71e-3 - 2.51e-3); % 3.0 T
+    %wf = 220; %Hz (fat - water difference) 1.5T
+    wf = 440; %Hz (fat - water difference) 3.0T
+    OffRes = Delta_Phi/(2*pi*Delta_T);
+
+    %% Flip the map to match the reconstruction orientation
+    OffRes = rot90(OffRes,1);
+    
+    %{
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DERIVATIVE REGULARIZATION STARTS %%%%%%%
+[Gx,Gy] = gradient(OffRes);
+
+Gx_thres = single(zeros(size(Gx,1),size(Gx,2)));
+Gy_thres = single(zeros(size(Gy,1),size(Gy,2)));
+
+xarr = linspace(0,400e-3,size(Gx,1)); % coordinates array
+yarr = linspace(0,400e-3,size(Gx,2));
+
+limit = 90; %max derivative admited in a pixel (without taking into account pixel size)
+pixsize = 1e-3;
+
+% Remove extreme values and extrapolate
+
+for i = 1:size(Gx,1),
+            Gx_thres(i,:) = filloutliers(Gx(i,:),'linear');
+end
+
+
+disp(size(Gx))
+subplot()
+%imagesc(squeeze(Gx(:,11)));
+P = polyfit(linspace(0,size(Gx,1),size(Gx,1)),Gx_thres(:,33,1),1)
+yfit = polyval(P,linspace(0,size(Gx,1),size(Gx,1)));
+plot(1:64,Gx(:,33,1),1:64,yfit, 'r-.')
+%plot(1:64,Gx(:,33,1),1:64,Gx_thres(:,33,1), 'o')
+title('G');
+pause(9999999999999999999)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DERIVATIVE REGULARIZATION ENDS   %%%%%%%
+    %}
+
+    %{
+%% Load Dicom to compare
+[info] = dicominfo('Jesus_research.MR._.8001.1.2022.06.30.11.31.16.152.71364596.dcm');
+[B0map] = dicomread('Jesus_research.MR._.8001.1.2022.06.30.11.31.16.152.71364596.dcm');
+%B0map = squeeze(B0map(:,:,:,4))%Multislice only!!!!
+
+B0 = rescale(B0map,-1,1)*((2*pi-4096)/2048)*((1/(Delta_T))/2);% (2*p -4096)/2048*range (double(B0map)*(max(B0map(:)) - min(B0map(:)))/4095) *(1/(Delta_T)/2);
+
+%(info.RescaleSlope)%*double(B0map))% +info.RescaleIntercept)/4095*((1/(Delta_T)/2);
+I = B0; %dicomread('74689485');
+I = double(I);
+%I = unwrap_phase(I);
+%pause(99999999999)
+    %}
+
+
+    %% Load through-time MRF average
+    %  to create the mask
+    %load("Blurred_Image.mat","image_combined") %in folder 2D_MRF_Reconstruction_main
+
+    %C = imquantize(abs(mean(image_combined(:,:,1),3)),300); %mask from MRF through-time average THIS FILE IS IN THE 2D_MRF_ReconstructionMain folder
+
+    % get some 2D matrix, and plot as surface
+    %subplot(121), imagesc(C);
+
+    %{
+disp(size(A))
+subplot()
+imagesc(squeeze(C(:,:,1)));
+title('Off res map')
+colorbar
+pause(99999999)
+    %}
+
+    %% Resize Off-resonance map
+    %# create interpolant
+    %{
+A = OffRes;
+[X,Y] = meshgrid(1:size(A,2), 1:size(A,1));
+%[XX,YY] = meshgrid(1:size(I,2), 1:size(I,1));
+F = scatteredInterpolant(X(:), Y(:), A(:), 'linear');
+%FF = scatteredInterpolant(XX(:), YY(:), I(:), 'linear');
+
+%# interpolate over a finer grid
+FOV = 400;
+[U,V] = meshgrid(linspace(1,size(A,2),FOV), linspace(1,size(A,1),FOV));
+%[UU,VV] = meshgrid(linspace(1,size(I,2),FOV), linspace(1,size(I,1),FOV));
+%subplot(122), imagesc(F(U,V));
+
+InterpolatedField = F(U,V);
+
+%% Crop handrawn field
+quant_map = InterpolatedField;
+size_image_x = size(quant_map,1);
+size_image_y = size(quant_map,2);
+figure, imagesc(1:size_image_x, 1:size_image_y, quant_map);
+h = drawfreehand;
+ROI = createMask(h);
+MaskedImage = ROI.*quant_map;
+data = nonzeros(MaskedImage);
+%histogram(data,15)
+%imshow(MaskedImage,[]);
+InterpolatedField = MaskedImage;
+    %}
+    LPF_2D = Lowpass(OffRes, 15);
+    %InterpolatedDicom = rot90(FF(UU,VV),3); %This is for the DICOM map to be in the same direction of the acquired map (single slice)
+    %InterpolatedDicom = FF(UU,VV); %This is for the DICOM map to be in the same direction of the acquired map (single slice)
+    Thres = wf/2; %Cropping off-res magnitude in +/- Thres
+    OffRes(OffRes>Thres)=Thres;
+    OffRes(OffRes<-Thres)=-Thres;
+    LPF_2D(LPF_2D>Thres)=Thres;
+    LPF_2D(LPF_2D<-Thres)=-Thres;
+    %InterpolatedDicom(InterpolatedDicom>170)=170;
+    %InterpolatedDicom(InterpolatedDicom<-170)=-170;
+    %InterpolatedDicom(1:126 , :)= 0;
+    %InterpolatedDicom(300:end , :)= 0;
+    %InterpolatedDicom(: , 1:120)= 0;
+    %InterpolatedDicom(: , 250:end)= 0;
+
+    %c = [150 150 300 300];
+    %r = [150 300 150 300];
+    %InterpolatedDicom = roipoly(InterpolatedDicom,c,r);
+
+    %{
+imshowpair(abs(InterpolatedField),abs(squeeze(image_combined(:,:,1))),'diff')
+
+
+maskidx = C == 2;
+disp(size(maskidx));
+disp(size(InterpolatedField));
+disp(size(InterpolatedField));
+masked1 = maskidx .* (squeeze(image_combined(:,:,1)));
+masked2 = maskidx .* (squeeze(InterpolatedField(:,:))); %masked fieldmap
+masked3 = maskidx .* (squeeze(InterpolatedDicom(:,:))); %masked dicom fieldmap
+    %}
+
+    %% Plot the map to compare orientation
+    %mr_imshow(abs((LPF_2D)));
+    %{
+cmlist = [-Thres, Thres];
+subplot()
+imagesc(rot90(((LPF_2D(:,:))),1),cmlist);
+colormap('grey');
+title('Off-resonance (Hz)')
+colorbar
+    %}
+
+    LPF_2D = rot90(LPF_2D,3);
+
+    LPF(:,:,nn) = LPF_2D;
+    %{
+cmlist = [-Thres, Thres];
+figure('name','T1 T2 and Proton Density');
+subplot(1,2,1)
+imagesc((((OffRes(:,:)))),cmlist);
+colormap('gray');
+title('Calculated map')
+colorbar
+
+subplot(1,2,2)
+imagesc((((LPF_2D(:,:)))),cmlist);
+colormap('gray');
+title('Low Pass Filtered Field Map')
+colorbar
+
+
+
+subplot(1,4,1)
+imagesc(squeeze(A(:,:,1)));
+colorbar
+title('Subplot 1')
+
+subplot(1,4,2)
+imagesc(masked2);
+title('Subplot 2')
+colorbar
+
+subplot(1,4,3)
+imagesc(maskidx);
+title('Subplot 3')
+colorbar
+
+subplot(1,4,4)
+imagesc(masked3);
+title('Subplot 4')
+colorbar
+    %}
+end
+
+A = LPF(:,:,1:int16(size(LPF,3)/2));
+B = LPF(:,:,int16(size(LPF,3)/2)+1:size(LPF,3));
+
+disp('tamanos')
+disp(size(A))
+disp(size(B))
+disp(size(LPF))
+
+idxeven = 0;
+idxodd = 0;
+for i=1:size(LPF,3),
+    if bitget(i,1)
+        if idxeven < size(B,3)
+        LPF(:,:,i) = B(:,:,idxeven+1);
+        idxeven = idxeven+1
+        end
+    else
+        if idxodd < size(A,3)
+        LPF(:,:,i) = A(:,:,idxodd+1);
+        idxodd = idxodd+1
+        end
+    end
+end
+save('off_res.mat','LPF')
+
+
+end
+
